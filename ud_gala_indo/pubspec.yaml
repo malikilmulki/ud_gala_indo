@@ -52,6 +52,9 @@ dependencies:
   #make request to API
   retrofit: 4.1.0
 
+  #service locator
+  get_it: ^7.6.0
+
   #hooks
   flutter_hooks: ^0.18.3
 
