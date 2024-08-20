@@ -16,27 +16,6 @@ class IncomingListPage extends StatefulWidget {
 }
 
 class _IncomingListPageState extends State<IncomingListPage> {
-  // Sample data for the table
-  List<Map<String, String>> data1 = [
-    {
-      "No": "1",
-      "Nama": "John Doe",
-      "Jenis Kelamin": "Laki-laki",
-      "Kawasan Kebun": "Kebun A",
-      "Tanggal Masuk": "2024-01-01",
-      "Berat": "70kg",
-      "Status": "Aktif"
-    },
-    {
-      "No": "2",
-      "Nama": "Jane Doe",
-      "Jenis Kelamin": "Perempuan",
-      "Kawasan Kebun": "Kebun B",
-      "Tanggal Masuk": "2024-02-01",
-      "Berat": "65kg",
-      "Status": "Non-Aktif"
-    },
-  ];
 
   TextEditingController searchController = TextEditingController();
 
@@ -49,7 +28,7 @@ class _IncomingListPageState extends State<IncomingListPage> {
 
   void _deleteEntry(int index) {
     setState(() {
-      data1.removeAt(index);
+
     });
   }
 
@@ -141,58 +120,6 @@ class _IncomingListPageState extends State<IncomingListPage> {
         }
         return const SizedBox();
       }
-    );
-  }
-
-
-  Widget _buildTitleAndDescription(IncomingEntity ? article) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            Text(
-              article!.namaBarang?? '',
-              maxLines : 3,
-              overflow : TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: 'Butler',
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                color: Colors.black87,
-              ),
-            ),
-
-            // Description
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  article!.kawasanKebun ?? '',
-                  maxLines : 2,
-                ),
-              ),
-            ),
-
-            // Datetime
-            Row(
-              children: [
-                const Icon(Icons.timeline_outlined, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  article!.status!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ud_gala_indo/screens/pages/dashboard_page.dart';
-import 'package:ud_gala_indo/screens/pages/incoming_list_page.dart';
 import 'package:ud_gala_indo/screens/pages/incoming_page.dart';
 import 'package:ud_gala_indo/screens/pages/outgoing_page.dart';
 import 'package:ud_gala_indo/screens/pages/report_page.dart';
