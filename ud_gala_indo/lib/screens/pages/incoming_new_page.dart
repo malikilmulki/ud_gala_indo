@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
+import 'package:ud_gala_indo/features/incoming/data/data_sources/incoming_api_service.dart';
 import 'dart:convert';
 
-import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart'; // For JSON parsing
+import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
+import 'package:ud_gala_indo/models/barang_model.dart';
+import 'package:ud_gala_indo/models/petani_model.dart';
+import 'package:ud_gala_indo/service/api_service.dart'; // For JSON parsing
 // import 'api_service.dart';
 
 class IncomingNewPage extends StatefulWidget {
@@ -20,24 +24,53 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   final TextEditingController _statusController = TextEditingController();
 
   Dio dio = Dio();
+  final apiService = ApiService(Dio());
+  final incomingService = IncomingApiService(Dio());
   // late ApiService apiService;
 
   String? _selectedJenisKelamin;
   List<dynamic> _jenisKelaminOptions = [];
+  List<PetaniModel> _listPetani = [];
+  List<BarangModel> _listBarang = [];
+
+  PetaniModel? _selectedPetani;
+  BarangModel? _selectedBarang;
 
   @override
   void initState() {
     super.initState();
-    // apiService = ApiService(dio);
+    _fetchPetani();
+    //_fetchBarang();
     _loadJenisKelaminData();
+  }
+
+  Future<void> _fetchPetani() async {
+    try {
+      final data = await apiService.getPetani();
+      setState(() {
+        _listPetani = data;
+      });
+    } catch (e) {
+      print("Failed to fetch data: $e");
+    }
+  }
+
+  Future<void> _fetchBarang() async {
+    try {
+      final data = await apiService.getBarang();
+      setState(() {
+        _listBarang = data;
+      });
+    } catch (e) {
+      print("Failed to fetch data: $e");
+    }
   }
 
   Future<void> _loadJenisKelaminData() async {
     final String jsonString = '''
     [
-      { "id": 1, "label": "Male" },
-      { "id": 2, "label": "Female" },
-      { "id": 3, "label": "Other" }
+      { "id": "L", "label": "Laki-Laki" },
+      { "id": "P", "label": "Perempuan" }
     ]
     '''; // Replace this with your actual JSON source
 
@@ -50,18 +83,19 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   Future<void> _saveData() async {
     if (_formKey.currentState!.validate()) {
       final newData = IncomingModel(
-        namaPetani: _namaController.text,
-        jenisKelamin: _selectedJenisKelamin ?? '',
-        kawasanKebun: _kawasanKebunController.text.isNotEmpty
-            ? _kawasanKebunController.text
-            : null, // Handle null value
+        barangId: '1',
+        namaBarang: 'Cengkeh',
+        petaniId: _selectedPetani?.id,
+        namaPetani: _selectedPetani?.namaPetani,
+        jenisKelamin: _selectedJenisKelamin,
+        kawasanKebun: _kawasanKebunController.text, // Handle null value
         tanggalMasuk: _tanggalMasukController.text,
         beratCengkeh: _beratController.text,
         status: _statusController.text,
       );
 
       try {
-        //await apiService.addData(newData);
+        await incomingService.saveData(newData);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Data successfully saved!')),
         );
@@ -93,22 +127,33 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            TextFormField(
-                              controller: _namaController,
-                              decoration: InputDecoration(labelText: 'Nama'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Nama';
-                                }
-                                return null;
+                            DropdownButtonFormField<PetaniModel>(
+                              value: _selectedPetani,
+                              hint: Text("Select an item"),
+                              onChanged: (PetaniModel? newValue) {
+                                setState(() {
+                                  _selectedPetani = newValue;
+                                  _selectedJenisKelamin = newValue?.jenisKelamin;
+                                  //_textFieldController.text = newValue?.name ?? "";  // Update the TextField with the selected item's name
+                                });
                               },
+                              items: _listPetani.map((PetaniModel item) {
+                                return DropdownMenuItem<PetaniModel>(
+                                  value: item,
+                                  child: Text(item.namaPetani!),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Petani",
+                              ),
                             ),
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(labelText: 'Jenis Kelamin'),
                               value: _selectedJenisKelamin,
                               items: _jenisKelaminOptions.map((option) {
                                 return DropdownMenuItem<String>(
-                                  value: option['label'],
+                                  value: option['id'],
                                   child: Text(option['label']),
                                 );
                               }).toList(),
@@ -147,7 +192,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                     if (pickedDate != null) {
                                       setState(() {
                                         _tanggalMasukController.text =
-                                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                                            DateFormat('dd-MM-yyyy').format(pickedDate);
                                       });
                                     }
                                   },

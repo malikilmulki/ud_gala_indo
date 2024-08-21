@@ -3,7 +3,7 @@ import 'package:ud_gala_indo/core/resources/data_state.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/outgoing/remote_outgoing_event.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/outgoing/remote_outgoing_state.dart';
 
-import 'package:ud_gala_indo/features/incoming/domain/usecases/get_outgoing.dart';
+import 'package:ud_gala_indo/features/incoming/domain/usecases/outgoing/get_outgoing.dart';
 
 class RemoteOutgoingBloc extends Bloc<RemoteOutgoingEvent, RemoteOutgoingState>{
   final GetOutgoingUseCase _getOutgoingUseCase;

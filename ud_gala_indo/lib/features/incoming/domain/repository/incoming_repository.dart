@@ -3,4 +3,6 @@ import 'package:ud_gala_indo/core/resources/data_state.dart';
 
 abstract class IncomingRepository{
   Future<DataState<List<IncomingEntity>>> getIncomingGoods();
+  Future<void> addIncoming(IncomingEntity incomingEntity);
+  Future<void> deleteIncoming(IncomingEntity incomingEntity);
 }

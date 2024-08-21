@@ -39,4 +39,34 @@ class IncomingModel extends IncomingEntity{
         status: map['status'],
       );
   }
+
+  factory IncomingModel.fromEntity(IncomingEntity entity) {
+    return IncomingModel(
+      id: entity.id,
+      barangId: entity.barangId,
+      namaBarang: entity.namaBarang,
+      petaniId: entity.petaniId,
+      namaPetani: entity.namaPetani,
+      jenisKelamin: entity.jenisKelamin,
+      kawasanKebun: entity.kawasanKebun,
+      tanggalMasuk: entity.tanggalMasuk,
+      beratCengkeh: entity.beratCengkeh,
+      status: entity.status,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'barangId': barangId,
+      'namaBarang': namaBarang,
+      'petaniId': petaniId,
+      'namaPetani': namaPetani,
+      'jenisKelamin': jenisKelamin,
+      'kawasanKebun': kawasanKebun,
+      'tanggalMasuk': tanggalMasuk, // Convert DateTime to String
+      'beratCengkeh': beratCengkeh,
+      'status': status,
+    };
+  }
 }

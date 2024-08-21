@@ -1,12 +1,12 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:ud_gala_indo/features/incoming/data/data_sources/incoming_api_service.dart';
-import 'package:ud_gala_indo/features/incoming/data/repository/incoming_repositort_impl.dart';
+import 'package:ud_gala_indo/features/incoming/data/repository/incoming_repository_impl.dart';
 import 'package:ud_gala_indo/features/incoming/data/repository/outgoing_repository_impl.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/incoming_repository.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/outgoing_repository.dart';
-import 'package:ud_gala_indo/features/incoming/domain/usecases/get_incoming.dart';
-import 'package:ud_gala_indo/features/incoming/domain/usecases/get_outgoing.dart';
+import 'package:ud_gala_indo/features/incoming/domain/usecases/incoming/get_incoming.dart';
+import 'package:ud_gala_indo/features/incoming/domain/usecases/outgoing/get_outgoing.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_bloc.dart';
 
 import 'features/incoming/data/data_sources/outgoing_api_service.dart';
