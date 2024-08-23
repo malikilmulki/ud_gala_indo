@@ -39,6 +39,7 @@ class _IncomingPageState extends State<IncomingPage> {
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.file), label: "Tambah Data")
         ],
       ),
+      backgroundColor: Theme.of(context).cardColor,
     );
   }
 }

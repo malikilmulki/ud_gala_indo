@@ -46,12 +46,21 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RemoteOutgoingBloc>(
-      create: (context) => sl()..add(GetOutgoings()),
-      child: Scaffold(
-          body: _buildBody()
-      ),
-    );
+    return  Container(
+        margin: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.white),
+        color:Theme.of(context).primaryColor
+        ),
+        child: BlocProvider<RemoteOutgoingBloc>(
+          create: (context) => sl()..add(GetOutgoings()),
+          child: Scaffold(
+              body: _buildBody()
+          ),
+        )
+        );
   }
 
   _buildBody(){
@@ -122,6 +131,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                   ],
                 ),
               ),
+              backgroundColor: Theme.of(context).primaryColorDark,
             );
           }
           return const SizedBox();

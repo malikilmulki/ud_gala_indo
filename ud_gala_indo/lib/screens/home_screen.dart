@@ -27,23 +27,23 @@ class _HomePageState extends State<HomePage> {
   List<NavigationRailDestination> _buildDestinations() {
     return [
       NavigationRailDestination(
-        icon: FaIcon(FontAwesomeIcons.house),
+        icon: FaIcon(FontAwesomeIcons.house, color: Colors.lightGreenAccent),
         label: Text('Dashboard'),
       ),
       const NavigationRailDestination(
-        icon: FaIcon(FontAwesomeIcons.inbox),
+        icon: FaIcon(FontAwesomeIcons.inbox, color: Colors.lightGreenAccent),
         label: Text('Barang Masuk'),
       ),
       const NavigationRailDestination(
-        icon: FaIcon(FontAwesomeIcons.share),
+        icon: FaIcon(FontAwesomeIcons.share, color: Colors.lightGreenAccent),
         label: Text('Barang Keluar'),
       ),
       const NavigationRailDestination(
-        icon: FaIcon(FontAwesomeIcons.file),
+        icon: FaIcon(FontAwesomeIcons.file, color: Colors.lightGreenAccent),
         label: Text('Reports'),
       ),
       const NavigationRailDestination(
-        icon: FaIcon(FontAwesomeIcons.arrowRightFromBracket),
+        icon: FaIcon(FontAwesomeIcons.arrowRightFromBracket, color: Colors.lightGreenAccent),
         label: Text('Logout'),
 
       ),

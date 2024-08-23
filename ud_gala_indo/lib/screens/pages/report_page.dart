@@ -42,6 +42,7 @@ class _ReportPageState extends State<ReportPage> {
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.list), label: "Laporan Stock")
         ],
       ),
+      backgroundColor: Theme.of(context).cardColor,
     );
   }
 }

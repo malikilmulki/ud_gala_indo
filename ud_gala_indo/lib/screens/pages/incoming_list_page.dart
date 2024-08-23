@@ -34,12 +34,22 @@ class _IncomingListPageState extends State<IncomingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RemoteIncomingBloc>(
+    return Container(
+      margin: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.white),
+        color: Theme.of(context).cardColor
+      ),
+      child: BlocProvider<RemoteIncomingBloc>(
       create: (context) => sl()..add(GetIncomings()),
-      child: Scaffold(
-          body: _buildBody()
+        child: Scaffold(
+            body: _buildBody()
+        ),
       ),
     );
+
 
   }
   _buildBody(){
@@ -116,6 +126,7 @@ class _IncomingListPageState extends State<IncomingListPage> {
                 ],
               ),
             ),
+            backgroundColor: Theme.of(context).cardColor,
           );
         }
         return const SizedBox();

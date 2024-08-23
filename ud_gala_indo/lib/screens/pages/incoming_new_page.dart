@@ -109,142 +109,147 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(  // Ensures the entire content can be scrolled
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Card(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      elevation: 4.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            DropdownButtonFormField<PetaniModel>(
-                              value: _selectedPetani,
-                              hint: Text("Select an item"),
-                              onChanged: (PetaniModel? newValue) {
-                                setState(() {
-                                  _selectedPetani = newValue;
-                                  _selectedJenisKelamin = newValue?.jenisKelamin;
-                                  //_textFieldController.text = newValue?.name ?? "";  // Update the TextField with the selected item's name
-                                });
-                              },
-                              items: _listPetani.map((PetaniModel item) {
-                                return DropdownMenuItem<PetaniModel>(
-                                  value: item,
-                                  child: Text(item.namaPetani!),
-                                );
-                              }).toList(),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: "Petani",
-                              ),
-                            ),
-                            DropdownButtonFormField<String>(
-                              decoration: InputDecoration(labelText: 'Jenis Kelamin'),
-                              value: _selectedJenisKelamin,
-                              items: _jenisKelaminOptions.map((option) {
-                                return DropdownMenuItem<String>(
-                                  value: option['id'],
-                                  child: Text(option['label']),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedJenisKelamin = newValue;
-                                });
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select Jenis Kelamin';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: _kawasanKebunController,
-                              decoration: InputDecoration(labelText: 'Kawasan Kebun'),
-                              validator: (value) {
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: _tanggalMasukController,
-                              decoration: InputDecoration(
-                                labelText: 'Tanggal Masuk',
-                                suffixIcon: IconButton(
-                                  icon: Icon(Icons.calendar_today),
-                                  onPressed: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2101),
-                                    );
-                                    if (pickedDate != null) {
-                                      setState(() {
-                                        _tanggalMasukController.text =
-                                            DateFormat('dd-MM-yyyy').format(pickedDate);
-                                      });
-                                    }
-                                  },
+    return  Container(
+        margin: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.white),
+        color: Theme.of(context).primaryColor
+        ),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(  // Ensures the entire content can be scrolled
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              DropdownButtonFormField<PetaniModel>(
+                                value: _selectedPetani,
+                                hint: Text("Select an item"),
+                                onChanged: (PetaniModel? newValue) {
+                                  setState(() {
+                                    _selectedPetani = newValue;
+                                    _selectedJenisKelamin = newValue?.jenisKelamin;
+                                    //_textFieldController.text = newValue?.name ?? "";  // Update the TextField with the selected item's name
+                                  });
+                                },
+                                items: _listPetani.map((PetaniModel item) {
+                                  return DropdownMenuItem<PetaniModel>(
+                                    value: item,
+                                    child: Text(item.namaPetani!),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Petani",
                                 ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Tanggal Masuk';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: _beratController,
-                              decoration: InputDecoration(labelText: 'Berat (kg)'),
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Berat';
-                                }
-                                if (double.tryParse(value) == null) {
-                                  return 'Please enter a valid number';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: _statusController,
-                              decoration: InputDecoration(labelText: 'Status'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Status';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
+                              DropdownButtonFormField<String>(
+                                decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+                                value: _selectedJenisKelamin,
+                                items: _jenisKelaminOptions.map((option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option['id'],
+                                    child: Text(option['label']),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedJenisKelamin = newValue;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select Jenis Kelamin';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                controller: _kawasanKebunController,
+                                decoration: InputDecoration(labelText: 'Kawasan Kebun'),
+                                validator: (value) {
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                controller: _tanggalMasukController,
+                                decoration: InputDecoration(
+                                  labelText: 'Tanggal Masuk',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.calendar_today),
+                                    onPressed: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101),
+                                      );
+                                      if (pickedDate != null) {
+                                        setState(() {
+                                          _tanggalMasukController.text =
+                                              DateFormat('dd-MM-yyyy').format(pickedDate);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Tanggal Masuk';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                controller: _beratController,
+                                decoration: InputDecoration(labelText: 'Berat (kg)'),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Berat';
+                                  }
+                                  if (double.tryParse(value) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                controller: _statusController,
+                                decoration: InputDecoration(labelText: 'Status'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Status';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: _saveData,
+                          child: Text('Save'),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _saveData,
-                      child: Text('Save'),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        )
     );
   }
 }
