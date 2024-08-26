@@ -5,7 +5,9 @@ import 'package:ud_gala_indo/features/incoming/data/repository/incoming_reposito
 import 'package:ud_gala_indo/features/incoming/data/repository/outgoing_repository_impl.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/incoming_repository.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/outgoing_repository.dart';
+import 'package:ud_gala_indo/features/incoming/domain/usecases/incoming/delete_incoming.dart';
 import 'package:ud_gala_indo/features/incoming/domain/usecases/incoming/get_incoming.dart';
+import 'package:ud_gala_indo/features/incoming/domain/usecases/outgoing/delete_outgoing.dart';
 import 'package:ud_gala_indo/features/incoming/domain/usecases/outgoing/get_outgoing.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_bloc.dart';
 
@@ -21,7 +23,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<OutgoingApiService>(OutgoingApiService(sl()));
   
   sl.registerSingleton<IncomingRepository>(
-    IncomingRepositoryImpl(sl())
+      IncomingRepositoryImpl(sl())
   );
   sl.registerSingleton<OutgoingRepository>(
       OutgoingRepositoryImpl(sl())
@@ -31,15 +33,23 @@ Future<void> initializeDependencies() async {
       GetIncomingUseCase(sl())
   );
 
+  sl.registerSingleton<DeleteIncomingUseCase>(
+      DeleteIncomingUseCase(sl())
+  );
+
   sl.registerSingleton<GetOutgoingUseCase>(
       GetOutgoingUseCase(sl())
   );
 
+  sl.registerSingleton<DeleteOutgoingUseCase>(
+      DeleteOutgoingUseCase(sl())
+  );
+
   sl.registerFactory<RemoteIncomingBloc>(
-          ()=> RemoteIncomingBloc(sl())
+          ()=> RemoteIncomingBloc(sl(), sl())
   );
 
   sl.registerFactory<RemoteOutgoingBloc>(
-          ()=> RemoteOutgoingBloc(sl())
+          ()=> RemoteOutgoingBloc(sl(), sl())
   );
 }

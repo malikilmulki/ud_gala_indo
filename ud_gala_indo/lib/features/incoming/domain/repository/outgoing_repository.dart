@@ -3,4 +3,5 @@ import 'package:ud_gala_indo/features/incoming/domain/entities/outgoing.dart';
 
 abstract class OutgoingRepository{
   Future<DataState<List<OutgoingEntity>>> getOutgoingGoods();
+  Future<void> deleteOutgoing(OutgoingEntity entity);
 }

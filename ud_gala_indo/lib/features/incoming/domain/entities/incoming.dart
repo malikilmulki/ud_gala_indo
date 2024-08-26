@@ -2,6 +2,7 @@ import "package:equatable/equatable.dart";
 
 abstract class IncomingEntity extends Equatable {
   final String ? id;
+  final String ? no;
   final String ? barangId;
   final String ? namaBarang;
   final String ? petaniId;
@@ -14,6 +15,7 @@ abstract class IncomingEntity extends Equatable {
 
   IncomingEntity({
     this.id,
+    this.no,
     this.barangId,
     this.namaBarang,
     this.petaniId,
@@ -29,6 +31,7 @@ abstract class IncomingEntity extends Equatable {
   List<Object ? > get props{
     return [
       id,
+
       barangId,
       namaBarang,
       petaniId,

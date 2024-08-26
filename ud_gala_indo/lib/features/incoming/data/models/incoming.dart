@@ -2,6 +2,7 @@ import 'package:ud_gala_indo/features/incoming/domain/entities/incoming.dart';
 
 class IncomingModel extends IncomingEntity{
   final String ? id;
+  final String ? no;
   final String ? barangId;
   final String ? namaBarang;
   final String ? petaniId;
@@ -14,6 +15,7 @@ class IncomingModel extends IncomingEntity{
 
   IncomingModel({
     this.id,
+    this.no,
     this.barangId,
     this.namaBarang,
     this.petaniId,
@@ -28,6 +30,7 @@ class IncomingModel extends IncomingEntity{
   factory IncomingModel.fromJson(Map<String, dynamic> map){
       return IncomingModel(
         id: map['id'] ?? "",
+        no: map['no'] ?? "",
         barangId: map['barangId'] ?? "",
         namaBarang: map['namaBarang'] ?? "",
         petaniId: map['petaniId'] ?? "",
@@ -43,6 +46,7 @@ class IncomingModel extends IncomingEntity{
   factory IncomingModel.fromEntity(IncomingEntity entity) {
     return IncomingModel(
       id: entity.id,
+      no: entity.no,
       barangId: entity.barangId,
       namaBarang: entity.namaBarang,
       petaniId: entity.petaniId,

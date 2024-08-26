@@ -51,21 +51,19 @@ class _IncomingApiService implements IncomingApiService {
   }
 
   @override
-  Future<HttpResponse<dynamic>> saveData(
-    IncomingModel data, {
-    String contentType = "application/json",
-  }) async {
+  Future<HttpResponse<dynamic>> saveData(IncomingModel data) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': contentType};
+    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = data;
+    final _data = <String, dynamic>{};
+    _data.addAll(data.toJson());
     final _result =
         await _dio.fetch(_setStreamType<HttpResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
-      contentType: contentType,
+      contentType: 'application/json',
     )
             .compose(
               _dio.options,
@@ -78,7 +76,6 @@ class _IncomingApiService implements IncomingApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    print(data);
     final value = _result.data;
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
@@ -98,7 +95,7 @@ class _IncomingApiService implements IncomingApiService {
     )
             .compose(
               _dio.options,
-              '/incoming',
+              '/incoming/${id}',
               queryParameters: queryParameters,
               data: _data,
             )

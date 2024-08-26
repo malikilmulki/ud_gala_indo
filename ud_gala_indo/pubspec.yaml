@@ -64,6 +64,11 @@ dependencies:
   #icons
   font_awesome_flutter: 10.7.0
 
+  pdf: ^3.11.0
+  printing: ^5.11.0
+  excel: ^2.0.0
+  open_file: ^3.2.1
+  permission_handler: 11.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

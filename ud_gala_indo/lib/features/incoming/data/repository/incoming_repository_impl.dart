@@ -43,7 +43,19 @@ class IncomingRepositoryImpl implements IncomingRepository{
 
   @override
   Future<void> deleteIncoming(IncomingEntity incomingEntity) async {
-    await _incomingApiService.deleteData(int.parse(incomingEntity.id!));
+
+    try{
+      var httpResponse = await _incomingApiService.deleteData(int.parse(incomingEntity.id!));
+      if(httpResponse.response.statusCode == HttpStatus.ok){
+        print('success delete');
+      }
+      else{
+        print('failed to delete');
+      }
+    } on DioException catch(e){
+      print(e);
+      // return DataFailed(e);
+    }
   }
 
 }

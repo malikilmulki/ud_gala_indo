@@ -12,7 +12,7 @@ abstract class RemoteOutgoingState extends Equatable{
   RemoteOutgoingState({this.outgoings, this.error});
 
   @override
-  List<Object> get props => [outgoings!, error!];
+  List<Object> get props => [outgoings ?? [], error ?? []];
 }
 
 class RemoteOutgoingLoading extends RemoteOutgoingState{

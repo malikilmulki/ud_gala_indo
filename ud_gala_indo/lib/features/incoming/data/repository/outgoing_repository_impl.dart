@@ -5,6 +5,7 @@ import 'package:ud_gala_indo/core/resources/data_state.dart';
 import 'package:ud_gala_indo/features/incoming/data/data_sources/outgoing_api_service.dart';
 import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
 import 'package:ud_gala_indo/features/incoming/data/models/outgoing.dart';
+import 'package:ud_gala_indo/features/incoming/domain/entities/outgoing.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/incoming_repository.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/outgoing_repository.dart';
 
@@ -32,6 +33,23 @@ class OutgoingRepositoryImpl implements OutgoingRepository{
       }
     } on DioException catch(e){
       return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<void> deleteOutgoing(OutgoingEntity entity) async {
+
+    try{
+      var httpResponse = await _outgoingApiService.deleteData(int.parse(entity.id!));
+      if(httpResponse.response.statusCode == HttpStatus.ok){
+        print('success delete');
+      }
+      else{
+        print('failed to delete');
+      }
+    } on DioException catch(e){
+      print(e);
+      // return DataFailed(e);
     }
   }
 }

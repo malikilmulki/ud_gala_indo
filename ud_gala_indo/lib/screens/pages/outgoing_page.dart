@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ud_gala_indo/screens/pages/outgoing_new_page.dart';
 
-import 'incoming_new_page.dart';
+import 'outgoing_new_page.dart';
 import 'outgoing_list_page.dart';
 
 class OutgoingPage extends StatefulWidget {
@@ -14,8 +15,8 @@ class OutgoingPage extends StatefulWidget {
 class _OutgoingPageState extends State<OutgoingPage> {
   int _selectedScreenIndex = 0;
   final List _screens = [
-    {"screen": OutgoingListPage(), "title": "Daftar Barang Masuk"},
-    {"screen": IncomingNewPage(), "title": "Tambah Barang Masuk"}
+    {"screen": OutgoingListPage(), "title": "Daftar Barang Keluar"},
+    {"screen": OutgoingNewPage(), "title": "Tambah Barang Keluar"}
   ];
 
   void _selectScreen(int index) {

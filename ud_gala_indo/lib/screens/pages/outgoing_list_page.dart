@@ -13,35 +13,19 @@ class OutgoingListPage extends StatefulWidget {
 }
 
 class _OutgoingListPageState extends State<OutgoingListPage> {
-  // Sample data for the table
-  List<Map<String, String>> data = [
-    {
-      "No": "1",
-      "Nama": "John Doe",
-      "Tanggal Masuk": "2024-01-01",
-      "Berat": "70kg"
-    },
-    {
-      "No": "2",
-      "Nama": "Jane Doe",
-      "Tanggal Masuk": "2024-02-01",
-      "Berat": "65kg"
-    },
-  ];
-
+  OutgoingEntity ? outgoingEntity;
   TextEditingController searchController = TextEditingController();
 
-  void _addNewEntry() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => AddNewEntryPage()),
-    // );
-  }
+  void _onDeleteButtonPressed(BuildContext context) {
+    print(outgoingEntity);
+    var refreshProvider = context.read<RemoteOutgoingBloc>().add(RemoveOutgoing(outgoingEntity!));
 
-  void _deleteEntry(int index) {
-    setState(() {
-      data.removeAt(index);
-    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        //backgroundColor: Colors.black,
+        content: Text('Incoming removed successfully.'),
+      ),
+    );
   }
 
   @override
@@ -50,9 +34,9 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
         margin: EdgeInsets.all(16.0),
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.white),
-        color:Theme.of(context).primaryColor
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.white),
+          color:Theme.of(context).primaryColor
         ),
         child: BlocProvider<RemoteOutgoingBloc>(
           create: (context) => sl()..add(GetOutgoings()),
@@ -102,15 +86,16 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                         child: DataTable(
                           columns: [
                             DataColumn(label: Text('No')),
-                            DataColumn(label: Text('Nama Petani')),
+                            DataColumn(label: Text('Nama Karyawan')),
                             DataColumn(label: Text('Tanggal Keluar')),
                             DataColumn(label: Text('Berat Cengkeh')),
                             DataColumn(label: Text('Actions')),
                           ],
                           rows: List.generate(data.length, (index) {
+                            outgoingEntity = data[index];
                             return DataRow(cells: [
                               DataCell(Text(data[index].id!)),
-                              DataCell(Text(data[index].namaPetani!)),
+                              DataCell(Text(data[index].karyawan!)),
                               DataCell(Text(data[index].tanggalKeluar!)),
                               DataCell(Text(data[index].beratCengkeh!)),
                               DataCell(
@@ -118,7 +103,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.delete, color: Colors.red),
-                                      onPressed: () => _deleteEntry(index),
+                                      onPressed: () => _onDeleteButtonPressed(_),
                                     ),
                                   ],
                                 ),

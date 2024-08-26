@@ -18,7 +18,7 @@ abstract class IncomingApiService{
   })
   Future<HttpResponse> saveData(@Body() IncomingModel data);
 
-  @DELETE("/incoming")
-  Future<HttpResponse> deleteData(int id);
+  @DELETE("/incoming/{id}")
+  Future<HttpResponse> deleteData(@Path("id") int id);
 
 }

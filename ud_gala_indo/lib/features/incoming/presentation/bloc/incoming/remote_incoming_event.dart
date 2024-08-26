@@ -18,6 +18,10 @@ class GetIncomings extends RemoteIncomingEvent{
   GetIncomings();
 }
 
-class SaveIncomings extends RemoteIncomingEvent{
-  SaveIncomings(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
+class SaveIncoming extends RemoteIncomingEvent{
+  SaveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
+}
+
+class RemoveIncoming extends RemoteIncomingEvent{
+  RemoveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
 }

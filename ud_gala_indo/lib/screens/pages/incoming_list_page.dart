@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
 import 'package:ud_gala_indo/features/incoming/domain/entities/incoming.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_bloc.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_event.dart';
@@ -16,20 +15,20 @@ class IncomingListPage extends StatefulWidget {
 }
 
 class _IncomingListPageState extends State<IncomingListPage> {
-
+  IncomingEntity ? incoming;
   TextEditingController searchController = TextEditingController();
 
-  void _addNewEntry() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => IncomingNewPage()),
-    // );
-  }
 
-  void _deleteEntry(int index) {
-    setState(() {
+  void _onDeleteButtonPressed(BuildContext context) {
+    print(incoming);
+    var refreshProvider = context.read<RemoteIncomingBloc>().add(RemoveIncoming(incoming!));
 
-    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        //backgroundColor: Colors.black,
+        content: Text('Incoming removed successfully.'),
+      ),
+    );
   }
 
   @override
@@ -43,7 +42,7 @@ class _IncomingListPageState extends State<IncomingListPage> {
         color: Theme.of(context).cardColor
       ),
       child: BlocProvider<RemoteIncomingBloc>(
-      create: (context) => sl()..add(GetIncomings()),
+        create: (context) => sl()..add(GetIncomings()),
         child: Scaffold(
             body: _buildBody()
         ),
@@ -56,14 +55,17 @@ class _IncomingListPageState extends State<IncomingListPage> {
     return BlocBuilder<RemoteIncomingBloc, RemoteIncomingState>(
       builder: (_,state){
         if(state is RemoteIncomingLoading){
-          return const Center(child: CupertinoActivityIndicator());
+          print('loading');
+          return const Center(child: Icon(Icons.refresh));
         }
         if(state is RemoteIncomingError){
+          print('err');
+          print('error$state.error');
           return const Center(child: Icon(Icons.refresh));
         }
         if(state is RemoteIncomingDone){
+          print('success');
           List<IncomingEntity>  data = state.incomings!;
-          print(data.length);
           return Scaffold(
             body: Padding(
               padding: EdgeInsets.all(16.0),
@@ -100,8 +102,9 @@ class _IncomingListPageState extends State<IncomingListPage> {
                           DataColumn(label: Text('Actions')),
                         ],
                         rows: List.generate(data.length, (index) {
+                          incoming = data[index];
                           return DataRow(cells: [
-                            DataCell(Text(data[index].id!)),
+                            DataCell(Text(data[index].no!)),
                             DataCell(Text(data[index].namaPetani!)),
                             DataCell(Text(data[index].jenisKelamin!)),
                             DataCell(Text(data[index].kawasanKebun!)),
@@ -113,7 +116,7 @@ class _IncomingListPageState extends State<IncomingListPage> {
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () => _deleteEntry(index),
+                                    onPressed: () => _onDeleteButtonPressed(_),
                                   ),
                                 ],
                               ),

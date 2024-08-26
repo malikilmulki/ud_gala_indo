@@ -4,21 +4,17 @@ abstract class OutgoingEntity extends Equatable {
   final String ? id;
   final String ? barangId;
   final String ? namaBarang;
-  final String ? petaniId;
-  final String ? namaPetani;
+  final String ? karyawan;
   final String ? tanggalKeluar;
   final String ? beratCengkeh;
-  final String ? status;
 
   OutgoingEntity({
     this.id,
     this.barangId,
     this.namaBarang,
-    this.petaniId,
-    this.namaPetani,
+    this.karyawan,
     this.tanggalKeluar,
-    this.beratCengkeh,
-    this.status
+    this.beratCengkeh
   });
 
   @override
@@ -27,11 +23,9 @@ abstract class OutgoingEntity extends Equatable {
       id,
       barangId,
       namaBarang,
-      petaniId,
-      namaPetani,
+      karyawan,
       tanggalKeluar,
-      beratCengkeh,
-      status
+      beratCengkeh
     ];
   }
 }
