@@ -1,40 +1,109 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'package:excel/excel.dart';
-import 'package:open_file/open_file.dart';
 import 'dart:typed_data';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:excel/excel.dart' hide Border;
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_bloc.dart';
+import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_event.dart';
+import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_state.dart';
+import 'package:ud_gala_indo/injection_container.dart';
+import 'package:ud_gala_indo/models/report_model.dart';
 
-class ReportIncomingPage extends StatelessWidget {
-  final List<Map<String, dynamic>> dataList = [
-    {"No": 1, "Nama": "John", "Jenis Kelamin": "Male", "Tanggal Masuk": "2023-01-01", "Berat": 70.5, "Status": "Active"},
-    {"No": 2, "Nama": "Jane", "Jenis Kelamin": "Female", "Tanggal Masuk": "2023-02-01", "Berat": 60.0, "Status": "Inactive"},
-    // Add more data as needed
-  ];
+class ReportIncomingPage extends StatefulWidget {
+  @override
+  _ReportIncomingPageState createState() => _ReportIncomingPageState();
+}
+
+class _ReportIncomingPageState extends State<ReportIncomingPage> {
+  late List<ReportModel> dtList;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Export Data')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => exportToPdf(context),
-              child: Text('Export to PDF'),
-            ),
-            ElevatedButton(
-              onPressed: () => exportToExcel(),
-              child: Text('Export to Excel'),
-            ),
-          ],
+    return  Container(
+        margin: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(color: Colors.white),
+            color:Theme.of(context).primaryColor
         ),
-      ),
+        child: Center(
+          child: BlocProvider<RemoteReportBloc>(
+            create: (context) => sl()..add(GetMonthlyIncoming()),
+            child: Scaffold(
+                body: _buildBody()
+            ),
+          ),
+        )
+    );
+  }
+
+  _buildBody(){
+    return BlocBuilder<RemoteReportBloc, RemoteReportState>(
+        builder: (_,state){
+          if(state is RemoteReportStateLoading){
+            print('loading');
+            return const Center(child: CupertinoActivityIndicator());
+          }
+          if(state is RemoteReportStateError){
+            print('error');
+            return const Center(child: Icon(Icons.refresh));
+          }
+          if(state is RemoteReportStateDone){
+            print('done');
+            dtList = state.reports!;
+            print(dtList.length);
+            return Scaffold(
+              body: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: [
+                            DataColumn(label: Text('No')),
+                            DataColumn(label: Text('Bulan')),
+                            DataColumn(label: Text('Jumlah')),
+                            DataColumn(label: Text('Berat')),
+                          ],
+                          rows: List.generate(dtList.length, (index) {
+                            return DataRow(cells: [
+                              DataCell(Text((index + 1).toString())),
+                              DataCell(Text(dtList[index].bulan!)),
+                              DataCell(Text(dtList[index].jumlah!)),
+                              DataCell(Text(dtList[index].berat!))
+                            ]);
+                          }),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                              ElevatedButton(
+                                onPressed: () => exportToPdf(context),
+                                child: Text('Export to PDF'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => exportToExcel(),
+                                child: Text('Export to Excel'),
+                              ),
+                    ],)
+                  ],
+                ),
+              ),
+              backgroundColor: Theme.of(context).primaryColorDark,
+            );
+          }
+          return const SizedBox();
+        }
     );
   }
 
@@ -44,10 +113,12 @@ class ReportIncomingPage extends StatelessWidget {
     final fontData = await rootBundle.load("assets/fonts/muli/Muli.ttf");
     final ttf = pw.Font.ttf(fontData);
 
+    var dataList = dtList.map((e) => e.toJson()).toList();
+
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
-          return pw.Table.fromTextArray(
+          return pw.TableHelper.fromTextArray(
             headers: dataList.first.keys.toList(),
             data: dataList.map((item) => item.values.toList()).toList(),
             cellStyle: pw.TextStyle(font: ttf), // Use custom font here
@@ -63,14 +134,12 @@ class ReportIncomingPage extends StatelessWidget {
   Future<void> exportToExcel() async {
     var excel = Excel.createExcel();
     Sheet sheetObject = excel['Sheet1'];
+    var dataList = dtList.map((e) => e.toJson()).toList();
 
     sheetObject.appendRow(dataList.first.keys.toList()); // Add header
     for (var row in dataList) {
       sheetObject.appendRow(row.values.toList());
     }
-
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/output.xlsx');
 
     await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'incoming.xlsx');
   }

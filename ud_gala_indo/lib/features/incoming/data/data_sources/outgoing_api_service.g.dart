@@ -56,7 +56,7 @@ class _OutgoingApiService implements OutgoingApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<List<ReportModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -73,8 +73,8 @@ class _OutgoingApiService implements OutgoingApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
+    List<ReportModel> value = _result.data!['data']
+        .map<ReportModel>((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
@@ -86,7 +86,7 @@ class _OutgoingApiService implements OutgoingApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<List<ReportModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -103,8 +103,8 @@ class _OutgoingApiService implements OutgoingApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
+    List<ReportModel> value = _result.data!['data']
+        .map<ReportModel>((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;

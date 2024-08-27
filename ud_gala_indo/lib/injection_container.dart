@@ -73,6 +73,6 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerFactory<RemoteReportBloc>(
-          ()=> RemoteReportBloc(sl(), sl())
+          ()=> RemoteReportBloc(sl(), sl(), sl(), sl())
   );
 }
