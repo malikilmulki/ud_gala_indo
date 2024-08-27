@@ -51,12 +51,13 @@ class _ApiService implements ApiService {
 
   @override
   Future<List<PetaniModel>> getPetani() async {
+    print('sebelum');
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<PetaniModel>>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<List<PetaniModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -72,8 +73,9 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => PetaniModel.fromJson(i as Map<String, dynamic>))
+    print(_result);
+    var value = _result.data!['data']
+        .map<PetaniModel>((dynamic i) => PetaniModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
