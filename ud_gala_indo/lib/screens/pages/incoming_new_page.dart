@@ -17,11 +17,9 @@ class IncomingNewPage extends StatefulWidget {
 
 class _IncomingNewPageState extends State<IncomingNewPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _namaController = TextEditingController();
   final TextEditingController _kawasanKebunController = TextEditingController();
   final TextEditingController _tanggalMasukController = TextEditingController();
   final TextEditingController _beratController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
 
   Dio dio = Dio();
   final apiService = ApiService(Dio());
@@ -30,6 +28,10 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
 
   String? _selectedJenisKelamin;
   List<dynamic> _jenisKelaminOptions = [];
+
+  String? _selectedStatus;
+  List<dynamic> _statusOptions = [];
+
   List<PetaniModel> _listPetani = [];
   List<BarangModel> _listBarang = [];
 
@@ -40,8 +42,9 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   void initState() {
     super.initState();
     _fetchPetani();
-    //_fetchBarang();
+    _fetchBarang();
     _loadJenisKelaminData();
+    _loadStatusData();
   }
 
   Future<void> _fetchPetani() async {
@@ -67,12 +70,12 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   }
 
   Future<void> _loadJenisKelaminData() async {
-    final String jsonString = '''
+    const String jsonString = '''
     [
       { "id": "L", "label": "Laki-Laki" },
       { "id": "P", "label": "Perempuan" }
     ]
-    '''; // Replace this with your actual JSON source
+    ''';
 
     final List<dynamic> jsonResponse = json.decode(jsonString);
     setState(() {
@@ -80,18 +83,32 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
     });
   }
 
+  Future<void> _loadStatusData() async {
+    const String jsonString = '''
+    [
+      { "id": "Basah", "label": "Basah" },
+      { "id": "Tidak Basah", "label": "Tidak Basah" }
+    ]
+    ''';
+
+    final List<dynamic> jsonResponse = json.decode(jsonString);
+    setState(() {
+      _statusOptions = jsonResponse;
+    });
+  }
+
   Future<void> _saveData() async {
     if (_formKey.currentState!.validate()) {
       final newData = IncomingModel(
-        barangId: '1',
-        namaBarang: 'Cengkeh',
+        barangId: _selectedBarang?.id,
+        namaBarang: _selectedBarang?.namaBarang,
         petaniId: _selectedPetani?.id,
         namaPetani: _selectedPetani?.namaPetani,
         jenisKelamin: _selectedJenisKelamin,
         kawasanKebun: _kawasanKebunController.text, // Handle null value
         tanggalMasuk: _tanggalMasukController.text,
         beratCengkeh: _beratController.text,
-        status: _statusController.text,
+        status: _selectedStatus,
       );
 
       try {
@@ -132,6 +149,26 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
+                              DropdownButtonFormField<BarangModel>(
+                                value: _selectedBarang,
+                                hint: Text("Select an item"),
+                                onChanged: (BarangModel? newValue) {
+                                  setState(() {
+                                    _selectedBarang = newValue;
+                                  });
+                                },
+                                items: _listBarang.map((BarangModel item) {
+                                  return DropdownMenuItem<BarangModel>(
+                                    value: item,
+                                    child: Text(item.namaBarang!),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Barang",
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
                               DropdownButtonFormField<PetaniModel>(
                                 value: _selectedPetani,
                                 hint: Text("Select an item"),
@@ -153,8 +190,12 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                   labelText: "Petani",
                                 ),
                               ),
+                              const SizedBox(height: 16.0),
                               DropdownButtonFormField<String>(
-                                decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Jenis Kelamin",
+                                ),
                                 value: _selectedJenisKelamin,
                                 items: _jenisKelaminOptions.map((option) {
                                   return DropdownMenuItem<String>(
@@ -173,6 +214,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                   }
                                   return null;
                                 },
+
                               ),
                               TextFormField(
                                 controller: _kawasanKebunController,
@@ -224,12 +266,27 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                   return null;
                                 },
                               ),
-                              TextFormField(
-                                controller: _statusController,
-                                decoration: InputDecoration(labelText: 'Status'),
+                              const SizedBox(height: 16.0),
+                              DropdownButtonFormField<String>(
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Status",
+                                ),
+                                value: _selectedStatus,
+                                items: _statusOptions.map((option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option['id'],
+                                    child: Text(option['label']),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedStatus = newValue;
+                                  });
+                                },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter Status';
+                                    return 'Please select Status';
                                   }
                                   return null;
                                 },

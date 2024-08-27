@@ -94,7 +94,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                           rows: List.generate(data.length, (index) {
                             outgoingEntity = data[index];
                             return DataRow(cells: [
-                              DataCell(Text(data[index].id!)),
+                              DataCell(Text((index + 1).toString())),
                               DataCell(Text(data[index].karyawan!)),
                               DataCell(Text(data[index].tanggalKeluar!)),
                               DataCell(Text(data[index].beratCengkeh!)),

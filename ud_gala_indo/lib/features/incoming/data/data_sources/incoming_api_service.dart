@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:ud_gala_indo/core/constants/constansts.dart';
 import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
+import 'package:ud_gala_indo/models/report_model.dart';
 
 part 'incoming_api_service.g.dart';
 
@@ -11,6 +12,12 @@ abstract class IncomingApiService{
 
   @GET('/incoming/getallincominggoods')
   Future<HttpResponse<List<IncomingModel>>> getIncomingService();
+
+  @GET('/incoming/getmonthly')
+  Future<HttpResponse<List<ReportModel>>> getMonthlyIncoming();
+
+  @GET('/incoming/getyearly')
+  Future<HttpResponse<List<ReportModel>>> getYearlyIncoming();
 
   @POST("/incoming/saveincominggoods")
   @Headers(<String, dynamic>{
