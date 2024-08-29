@@ -128,7 +128,7 @@ class _ReportOutgoingPageState extends State<ReportOutgoingPage> {
       ),
     );
 
-    await saveFileToInternalStorage(await pdf.save(), 'incoming.pdf');
+    await saveFileToInternalStorage(await pdf.save(), 'outgoing.pdf');
   }
 
   Future<void> exportToExcel() async {
@@ -141,7 +141,7 @@ class _ReportOutgoingPageState extends State<ReportOutgoingPage> {
       sheetObject.appendRow(row.values.toList());
     }
 
-    await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'incoming.xlsx');
+    await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'outgoing.xlsx');
   }
 
   Future<void> saveFileToInternalStorage(Uint8List bytes, String fileName) async {
