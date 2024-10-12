@@ -4,8 +4,10 @@ import 'package:ud_gala_indo/service/api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:ud_gala_indo/models/login_request.dart';
 
+import '../core/constants/constans.dart';
+
 class AuthService {
-  final String baseUrl = "https://sjpapi2.azurewebsites.net";
+  final String baseUrl = sjpApiBaseUrl;
   final apiService = ApiService(Dio());
 
   Future<String?> login(String username, String password) async {

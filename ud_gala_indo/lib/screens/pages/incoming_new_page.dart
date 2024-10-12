@@ -20,6 +20,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   final TextEditingController _kawasanKebunController = TextEditingController();
   final TextEditingController _tanggalMasukController = TextEditingController();
   final TextEditingController _beratController = TextEditingController();
+  final TextEditingController _petaniController = TextEditingController();
 
   Dio dio = Dio();
   final apiService = ApiService(Dio());
@@ -31,6 +32,9 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
 
   String? _selectedStatus;
   List<dynamic> _statusOptions = [];
+
+  String? _selectedKawasan;
+  List<dynamic> _kawasanOptions = [];
 
   List<PetaniModel> _listPetani = [];
   List<BarangModel> _listBarang = [];
@@ -45,6 +49,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
     _fetchBarang();
     _loadJenisKelaminData();
     _loadStatusData();
+    _loadKawasanData();
   }
 
   Future<void> _fetchPetani() async {
@@ -86,8 +91,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   Future<void> _loadStatusData() async {
     const String jsonString = '''
     [
-      { "id": "Basah", "label": "Basah" },
-      { "id": "Tidak Basah", "label": "Tidak Basah" }
+      { "id": "Basah", "label": "Basah" }
     ]
     ''';
 
@@ -97,15 +101,31 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
     });
   }
 
+  Future<void> _loadKawasanData() async {
+    const String jsonString = '''
+    [
+      { "id": "Bonepute", "label": "Bonepute" },
+      { "id": "Binturu", "label": "Binturu" },
+      { "id": "Dadeko", "label": "Dadeko" },
+      { "id": "Salusana", "label": "Salusana" }
+    ]
+    ''';
+
+    final List<dynamic> jsonResponse = json.decode(jsonString);
+    setState(() {
+      _kawasanOptions = jsonResponse;
+    });
+  }
+
   Future<void> _saveData() async {
     if (_formKey.currentState!.validate()) {
       final newData = IncomingModel(
         barangId: _selectedBarang?.id,
         namaBarang: _selectedBarang?.namaBarang,
-        petaniId: _selectedPetani?.id,
-        namaPetani: _selectedPetani?.namaPetani,
+        petaniId: _petaniController.text,
+        namaPetani: _petaniController.text,
         jenisKelamin: _selectedJenisKelamin,
-        kawasanKebun: _kawasanKebunController.text, // Handle null value
+        kawasanKebun: _selectedKawasan, // Handle null value
         tanggalMasuk: _tanggalMasukController.text,
         beratCengkeh: _beratController.text,
         status: _selectedStatus,
@@ -149,46 +169,15 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              DropdownButtonFormField<BarangModel>(
-                                value: _selectedBarang,
-                                hint: Text("Select an item"),
-                                onChanged: (BarangModel? newValue) {
-                                  setState(() {
-                                    _selectedBarang = newValue;
-                                  });
+                              TextFormField(
+                                controller: _petaniController,
+                                decoration: InputDecoration(labelText: 'Nama Petani'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Nama Petani';
+                                  }
+                                  return null;
                                 },
-                                items: _listBarang.map((BarangModel item) {
-                                  return DropdownMenuItem<BarangModel>(
-                                    value: item,
-                                    child: Text(item.namaBarang!),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Barang",
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              DropdownButtonFormField<PetaniModel>(
-                                value: _selectedPetani,
-                                hint: Text("Select an item"),
-                                onChanged: (PetaniModel? newValue) {
-                                  setState(() {
-                                    _selectedPetani = newValue;
-                                    _selectedJenisKelamin = newValue?.jenisKelamin;
-                                    //_textFieldController.text = newValue?.name ?? "";  // Update the TextField with the selected item's name
-                                  });
-                                },
-                                items: _listPetani.map((PetaniModel item) {
-                                  return DropdownMenuItem<PetaniModel>(
-                                    value: item,
-                                    child: Text(item.namaPetani!),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Petani",
-                                ),
                               ),
                               const SizedBox(height: 16.0),
                               DropdownButtonFormField<String>(
@@ -216,13 +205,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                 },
 
                               ),
-                              TextFormField(
-                                controller: _kawasanKebunController,
-                                decoration: InputDecoration(labelText: 'Kawasan Kebun'),
-                                validator: (value) {
-                                  return null;
-                                },
-                              ),
+                              const SizedBox(height: 16.0),
                               TextFormField(
                                 controller: _tanggalMasukController,
                                 decoration: InputDecoration(
@@ -252,6 +235,32 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                   return null;
                                 },
                               ),
+                              const SizedBox(height: 16.0),
+                              DropdownButtonFormField<String>(
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Kawasan",
+                                ),
+                                value: _selectedKawasan,
+                                items: _kawasanOptions.map((option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option['id'],
+                                    child: Text(option['label']),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedKawasan = newValue;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select Kawasan';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16.0),
                               TextFormField(
                                 controller: _beratController,
                                 decoration: InputDecoration(labelText: 'Berat (kg)'),
@@ -294,7 +303,7 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: _saveData,
                           child: Text('Save'),

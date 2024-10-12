@@ -13,7 +13,7 @@ class _OutgoingApiService implements OutgoingApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://sjpapi2.azurewebsites.net/api';
+    baseUrl ??= sjpApiBaseUrl;
   }
 
   final Dio _dio;

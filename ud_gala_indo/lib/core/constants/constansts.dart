@@ -1,1 +1,0 @@
-const String sjpApiBaseUrl = 'https://sjpapi2.azurewebsites.net/api';
