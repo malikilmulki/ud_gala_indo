@@ -34,7 +34,7 @@ class _ReportStockPageState extends State<ReportStockPage> {
         ),
         child: Center(
           child: BlocProvider<RemoteReportBloc>(
-            create: (context) => sl()..add(GetYearlyOutgoing()),
+            create: (context) => sl()..add(GetStock()),
             child: Scaffold(
                 body: _buildBody()
             ),
@@ -70,15 +70,13 @@ class _ReportStockPageState extends State<ReportStockPage> {
                           columns: [
                             DataColumn(label: Text('No')),
                             DataColumn(label: Text('Tahun')),
-                            DataColumn(label: Text('Jumlah')),
-                            DataColumn(label: Text('Berat')),
+                            DataColumn(label: Text('Total Berat (Stock)')),
                           ],
                           rows: List.generate(dtList.length, (index) {
                             return DataRow(cells: [
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(dtList[index].bulan!)),
-                              DataCell(Text(dtList[index].jumlah!)),
-                              DataCell(Text(dtList[index].berat!))
+                              DataCell(Text(dtList[index].berat!  + " kg"))
                             ]);
                           }),
                         ),
@@ -99,7 +97,7 @@ class _ReportStockPageState extends State<ReportStockPage> {
                   ],
                 ),
               ),
-              backgroundColor: Theme.of(context).primaryColorDark,
+              backgroundColor: Theme.of(context).cardColor,
             );
           }
           return const SizedBox();
@@ -114,13 +112,19 @@ class _ReportStockPageState extends State<ReportStockPage> {
     final ttf = pw.Font.ttf(fontData);
 
     var dataList = dtList.map((e) => e.toJson()).toList();
-
+    List<String> dataColumns = [ 'Tahun', 'Total Berat'];
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
           return pw.TableHelper.fromTextArray(
-            headers: dataList.first.keys.toList(),
-            data: dataList.map((item) => item.values.toList()).toList(),
+            headers: dataColumns,
+            data:  dataList
+                .map((item) {
+              List<dynamic> values = item.values.toList();
+              values[2] = values[2] + ' Kg';
+              values.removeAt(1);
+              return values;
+            }).toList(),
             cellStyle: pw.TextStyle(font: ttf), // Use custom font here
             headerStyle: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.bold),
           );
@@ -135,10 +139,13 @@ class _ReportStockPageState extends State<ReportStockPage> {
     var excel = Excel.createExcel();
     Sheet sheetObject = excel['Sheet1'];
     var dataList = dtList.map((e) => e.toJson()).toList();
-
-    sheetObject.appendRow(dataList.first.keys.toList()); // Add header
+    List<String> dataColumns = [ 'Tahun', 'Total Berat'];
+    sheetObject.appendRow(dataColumns); // Add header
     for (var row in dataList) {
-      sheetObject.appendRow(row.values.toList());
+      List<dynamic> values = row.values.toList();
+      values[2] = values[2] + ' Kg';
+      values.removeAt(1);
+      sheetObject.appendRow(values);
     }
 
     await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'stock.xlsx');

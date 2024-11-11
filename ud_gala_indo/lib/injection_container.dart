@@ -60,6 +60,10 @@ Future<void> initializeDependencies() async {
       GetYearlyOutgoingUseCase(sl())
   );
 
+  sl.registerSingleton<GetStockUseCase>(
+      GetStockUseCase(sl())
+  );
+
   sl.registerSingleton<DeleteOutgoingUseCase>(
       DeleteOutgoingUseCase(sl())
   );
@@ -73,6 +77,6 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerFactory<RemoteReportBloc>(
-          ()=> RemoteReportBloc(sl(), sl(), sl(), sl())
+          ()=> RemoteReportBloc(sl(), sl(), sl(), sl(), sl())
   );
 }

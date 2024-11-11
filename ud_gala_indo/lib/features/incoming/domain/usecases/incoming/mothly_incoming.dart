@@ -25,3 +25,14 @@ class GetYearlyIncomingUseCase implements UseCase<DataState<List<ReportModel>>, 
     return _incomingRepository.getYearlyIncoming();
   }
 }
+
+class GetStockUseCase implements UseCase<DataState<List<ReportModel>>, void>{
+  final IncomingRepository _incomingRepository;
+
+  GetStockUseCase(this._incomingRepository);
+
+  @override
+  Future<DataState<List<ReportModel>>> call({void params}) {
+    return _incomingRepository.getStock();
+  }
+}

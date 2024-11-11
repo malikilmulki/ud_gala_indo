@@ -91,7 +91,8 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
   Future<void> _loadStatusData() async {
     const String jsonString = '''
     [
-      { "id": "Basah", "label": "Basah" }
+      { "id": "Basah", "label": "Basah" },
+      { "id": "Kering", "label": "Kering" }
     ]
     ''';
 
@@ -296,6 +297,9 @@ class _IncomingNewPageState extends State<IncomingNewPage> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please select Status';
+                                  }
+                                  if (value == "Basah") {
+                                    return 'Cengkeh dengan status basah, tidak bisa dilanjutkan';
                                   }
                                   return null;
                                 },

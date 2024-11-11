@@ -100,4 +100,25 @@ class IncomingRepositoryImpl implements IncomingRepository{
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<List<ReportModel>>> getStock() async {
+    // TODO: implement getMonthlyIncoming
+    try{
+      final httpResponse = await _incomingApiService.getStock();
+      if(httpResponse.response.statusCode == HttpStatus.ok){
+        return DataSuccess(httpResponse.data);
+      }
+      else{
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                requestOptions: httpResponse.response.requestOptions
+            ));
+      }
+    } on DioException catch(e){
+      return DataFailed(e);
+    }
+  }
 }

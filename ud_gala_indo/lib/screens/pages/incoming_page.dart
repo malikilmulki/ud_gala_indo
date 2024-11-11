@@ -14,8 +14,8 @@ class IncomingPage extends StatefulWidget {
 class _IncomingPageState extends State<IncomingPage> {
   int _selectedScreenIndex = 0;
   final List _screens = [
-    {"screen": IncomingListPage(), "title": "Daftar Barang Masuk"},
-    {"screen": IncomingNewPage(), "title": "Tambah Barang Masuk"}
+    {"screen": IncomingListPage(), "title": "Daftar Cengkeh Masuk"},
+    {"screen": IncomingNewPage(), "title": "Tambah Cengkeh Masuk"}
   ];
 
   void _selectScreen(int index) {
@@ -35,7 +35,7 @@ class _IncomingPageState extends State<IncomingPage> {
         currentIndex: _selectedScreenIndex,
         onTap: _selectScreen,
         items: const [
-          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.list), label: 'Daftar Barang'),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.list), label: 'Daftar Cengkeh'),
           BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.file), label: "Tambah Data")
         ],
       ),

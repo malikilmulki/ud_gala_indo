@@ -29,7 +29,7 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.white),
+            border: Border.all(color: Colors.black),
             color:Theme.of(context).primaryColor
         ),
         child: Center(
@@ -70,15 +70,15 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
                           columns: [
                             DataColumn(label: Text('No')),
                             DataColumn(label: Text('Bulan')),
-                            DataColumn(label: Text('Jumlah')),
-                            DataColumn(label: Text('Berat')),
+                            DataColumn(label: Text('Jumlah Masuk')),
+                            DataColumn(label: Text('Total Berat')),
                           ],
                           rows: List.generate(dtList.length, (index) {
                             return DataRow(cells: [
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(dtList[index].bulan!)),
                               DataCell(Text(dtList[index].jumlah!)),
-                              DataCell(Text(dtList[index].berat!))
+                              DataCell(Text(dtList[index].berat!  + " kg"))
                             ]);
                           }),
                         ),
@@ -99,7 +99,7 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
                   ],
                 ),
               ),
-              backgroundColor: Theme.of(context).primaryColorDark,
+              backgroundColor: Theme.of(context).cardColor,
             );
           }
           return const SizedBox();
@@ -114,13 +114,17 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
     final ttf = pw.Font.ttf(fontData);
 
     var dataList = dtList.map((e) => e.toJson()).toList();
-
+    List<String> dataColumns = [ 'Bulan', 'Jumlah Masuk', 'Total Berat'];
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
           return pw.TableHelper.fromTextArray(
-            headers: dataList.first.keys.toList(),
-            data: dataList.map((item) => item.values.toList()).toList(),
+            headers: dataColumns,
+            data: dataList.map((item) {
+              var valuesList = item.values.toList();
+              valuesList[2] = valuesList[2] + ' Kg'; // Change the third column
+              return valuesList;
+            }).toList(),
             cellStyle: pw.TextStyle(font: ttf), // Use custom font here
             headerStyle: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.bold),
           );
@@ -135,10 +139,13 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
     var excel = Excel.createExcel();
     Sheet sheetObject = excel['Sheet1'];
     var dataList = dtList.map((e) => e.toJson()).toList();
+    List<String> dataColumns = [ 'Bulan', 'Jumlah Masuk', 'Total Berat'];
 
-    sheetObject.appendRow(dataList.first.keys.toList()); // Add header
+    sheetObject.appendRow(dataColumns); // Add header
     for (var row in dataList) {
-      sheetObject.appendRow(row.values.toList());
+      var valuesList = row.values.toList();
+      valuesList[2] = valuesList[2] + ' Kg'; // Change the third column
+      sheetObject.appendRow(valuesList);
     }
 
     await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'incoming.xlsx');

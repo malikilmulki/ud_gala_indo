@@ -18,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   // List of menu items
   final List<String> _menuItems = [
     'Dashboard',
-    'Barang Masuk',
-    'Barang Keluar',
+    'Cengkeh Masuk',
+    'Cengkeh Keluar',
     'Laporan',
     'Logout',
   ];
@@ -32,11 +32,11 @@ class _HomePageState extends State<HomePage> {
       ),
       const NavigationRailDestination(
         icon: FaIcon(FontAwesomeIcons.inbox, color: Colors.lightGreenAccent),
-        label: Text('Barang Masuk'),
+        label: Text('Cengkeh Masuk'),
       ),
       const NavigationRailDestination(
         icon: FaIcon(FontAwesomeIcons.share, color: Colors.lightGreenAccent),
-        label: Text('Barang Keluar'),
+        label: Text('Cengkeh Keluar'),
       ),
       const NavigationRailDestination(
         icon: FaIcon(FontAwesomeIcons.file, color: Colors.lightGreenAccent),

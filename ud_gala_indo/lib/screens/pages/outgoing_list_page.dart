@@ -30,21 +30,21 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-        margin: EdgeInsets.all(16.0),
-        padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
+    return Container(
+      margin: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: Colors.white),
-          color:Theme.of(context).primaryColor
+          color: Theme.of(context).cardColor
+      ),
+      child: BlocProvider<RemoteOutgoingBloc>(
+        create: (context) => sl()..add(GetOutgoings()),
+        child: Scaffold(
+            body: _buildBody()
         ),
-        child: BlocProvider<RemoteOutgoingBloc>(
-          create: (context) => sl()..add(GetOutgoings()),
-          child: Scaffold(
-              body: _buildBody()
-          ),
-        )
-        );
+      ),
+    );
   }
 
   _buildBody(){
@@ -97,7 +97,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(data[index].karyawan!)),
                               DataCell(Text(data[index].tanggalKeluar!)),
-                              DataCell(Text(data[index].beratCengkeh!)),
+                              DataCell(Text(data[index].beratCengkeh! + ' Kg')),
                               DataCell(
                                 Row(
                                   children: [
@@ -116,7 +116,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                   ],
                 ),
               ),
-              backgroundColor: Theme.of(context).primaryColorDark,
+              backgroundColor: Theme.of(context).cardColor,
             );
           }
           return const SizedBox();

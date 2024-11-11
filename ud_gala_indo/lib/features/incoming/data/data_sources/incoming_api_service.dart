@@ -19,6 +19,10 @@ abstract class IncomingApiService{
   @GET('/incoming/getyearly')
   Future<HttpResponse<List<ReportModel>>> getYearlyIncoming();
 
+  @GET('/report/getstock')
+  Future<HttpResponse<List<ReportModel>>> getStock();
+
+
   @POST("/incoming/saveincominggoods")
   @Headers(<String, dynamic>{
     'Content-Type': 'application/json'

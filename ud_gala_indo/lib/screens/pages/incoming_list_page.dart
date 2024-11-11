@@ -72,11 +72,8 @@ class _IncomingListPageState extends State<IncomingListPage> {
               child: Column(
                 children: [
                   Container(
-                    //width: screenWidth / 3,
                     alignment: Alignment.centerRight,
-                    child:
-                    TextField(
-                      controller: searchController,
+                    child: TextField(
                       decoration: InputDecoration(
                         labelText: 'Search',
                         border: OutlineInputBorder(),
@@ -87,50 +84,55 @@ class _IncomingListPageState extends State<IncomingListPage> {
                     ),
                   ),
                   SizedBox(height: 16.0),
-                  Expanded(
+                  Container(
+                    height: 400, // Fixed height for the scrollable area
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: [
-                          DataColumn(label: Text('No')),
-                          DataColumn(label: Text('Nama Petani')),
-                          DataColumn(label: Text('Jenis Kelamin')),
-                          DataColumn(label: Text('Kawasan Kebun')),
-                          DataColumn(label: Text('Tanggal Masuk')),
-                          DataColumn(label: Text('Berat Cengkeh')),
-                          DataColumn(label: Text('Status')),
-                          DataColumn(label: Text('Actions')),
-                        ],
-                        rows: List.generate(data.length, (index) {
-                          incoming = data[index];
-                          return DataRow(cells: [
-                            DataCell(Text(data[index].no!)),
-                            DataCell(Text(data[index].namaPetani!)),
-                            DataCell(Text(data[index].jenisKelamin!)),
-                            DataCell(Text(data[index].kawasanKebun!)),
-                            DataCell(Text(data[index].tanggalMasuk!)),
-                            DataCell(Text(data[index].beratCengkeh!)),
-                            DataCell(Text(data[index].status!)),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () => _onDeleteButtonPressed(_),
-                                  ),
-                                ],
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: DataTable(
+                          columns: [
+                            DataColumn(label: Text('No')),
+                            DataColumn(label: Text('Nama Petani')),
+                            DataColumn(label: Text('Jenis Kelamin')),
+                            DataColumn(label: Text('Kawasan Kebun')),
+                            DataColumn(label: Text('Tanggal Masuk')),
+                            DataColumn(label: Text('Berat Cengkeh')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Actions')),
+                          ],
+                          rows: List.generate(data.length, (index) {
+                            incoming = data[index];
+                            return DataRow(cells: [
+                              DataCell(Text(data[index].no!)),
+                              DataCell(Text(data[index].namaPetani!)),
+                              DataCell(Text(data[index].jenisKelamin!)),
+                              DataCell(Text(data[index].kawasanKebun!)),
+                              DataCell(Text(data[index].tanggalMasuk!)),
+                              DataCell(Text('${data[index].beratCengkeh!} Kg')),
+                              DataCell(Text(data[index].status!)),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.delete, color: Colors.red),
+                                      onPressed: () => _onDeleteButtonPressed(_),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]);
-                        }),
+                            ]);
+                          }),
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             backgroundColor: Theme.of(context).cardColor,
           );
+
         }
         return const SizedBox();
       }

@@ -1,4 +1,5 @@
 name: ud_gala_indo
+
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -89,6 +90,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/apple.jpg
 
   uses-material-design: true
   fonts:

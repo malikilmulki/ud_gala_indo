@@ -27,3 +27,7 @@ class GetMonthlyOutgoing extends RemoteReportEvent{
 class GetYearlyOutgoing extends RemoteReportEvent{
   GetYearlyOutgoing();
 }
+
+class GetStock extends RemoteReportEvent{
+  GetStock();
+}

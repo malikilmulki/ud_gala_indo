@@ -11,8 +11,8 @@ ThemeData theme() {
       //   // ···
       //   brightness: Brightness.dark,
       // ),
-      primaryColor: Colors.black,
-      brightness: Brightness.dark,
+      primaryColor: Colors.white,
+      brightness: Brightness.light,
       appBarTheme: appBarTheme()
   );
 }
@@ -23,6 +23,6 @@ AppBarTheme appBarTheme() {
     elevation: 0,
     //centerTitle: true,
     //iconTheme: FontAw(color: Color(0XFF8B8B8B)),
-    titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+    titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
   );
 }
