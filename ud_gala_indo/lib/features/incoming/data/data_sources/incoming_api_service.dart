@@ -3,13 +3,27 @@ import 'package:retrofit/retrofit.dart';
 import 'package:ud_gala_indo/core/constants/constans.dart';
 import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
 import 'package:ud_gala_indo/models/report_model.dart';
+import 'dart:convert';
 
 part 'incoming_api_service.g.dart';
 
 @RestApi(baseUrl: sjpApiBaseUrl)
 abstract class IncomingApiService{
-  factory IncomingApiService(Dio dio) = _IncomingApiService;
 
+  factory IncomingApiService(Dio dio) {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) {
+        const username = "11213978";
+        const password = "60-dayfreetrial";
+        final basicAuth =
+            'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+        options.headers["Authorization"] = basicAuth;
+        return handler.next(options);
+      },
+    ));
+    return _IncomingApiService(dio);
+  }
   @GET('/incoming/getallincominggoods')
   Future<HttpResponse<List<IncomingModel>>> getIncomingService();
 
