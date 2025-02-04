@@ -22,18 +22,26 @@ final sl = GetIt.instance;
 Future<void> initializeDependencies() async {
   sl.registerSingleton<Dio>(Dio());
 
-  sl.registerSingleton<IncomingApiService>(IncomingApiService(sl()));
-  sl.registerSingleton<OutgoingApiService>(OutgoingApiService(sl()));
+  sl.registerSingleton<IncomingApiService>(IncomingApiService(sl<Dio>()));
+  sl.registerSingleton<OutgoingApiService>(OutgoingApiService(sl<Dio>()));
   
   sl.registerSingleton<IncomingRepository>(
-      IncomingRepositoryImpl(sl())
+      IncomingRepositoryImpl(sl<IncomingApiService>())
   );
   sl.registerSingleton<OutgoingRepository>(
       OutgoingRepositoryImpl(sl())
   );
 
   sl.registerSingleton<GetIncomingUseCase>(
-      GetIncomingUseCase(sl())
+      GetIncomingUseCase(sl<IncomingRepository>())
+  );
+
+  sl.registerSingleton<GetDailyIncomingUseCase>(
+      GetDailyIncomingUseCase(sl())
+  );
+
+  sl.registerSingleton<GetWeeklyIncomingUseCase>(
+      GetWeeklyIncomingUseCase(sl())
   );
 
   sl.registerSingleton<GetMonthlyIncomingUseCase>(
@@ -77,6 +85,6 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerFactory<RemoteReportBloc>(
-          ()=> RemoteReportBloc(sl(), sl(), sl(), sl(), sl())
+          ()=> RemoteReportBloc(sl(), sl(),sl(), sl(), sl(), sl(), sl())
   );
 }

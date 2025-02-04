@@ -60,6 +60,48 @@ class IncomingRepositoryImpl implements IncomingRepository{
   }
 
   @override
+  Future<DataState<List<ReportModel>>> getDailyIncoming() async {
+    // TODO: implement getMonthlyIncoming
+    try{
+      final httpResponse = await _incomingApiService.getDailyIncoming();
+      if(httpResponse.response.statusCode == HttpStatus.ok){
+        return DataSuccess(httpResponse.data);
+      }
+      else{
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                requestOptions: httpResponse.response.requestOptions
+            ));
+      }
+    } on DioException catch(e){
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<List<ReportModel>>> getWeeklyIncoming() async {
+    // TODO: implement getMonthlyIncoming
+    try{
+      final httpResponse = await _incomingApiService.getWeeklyIncoming();
+      if(httpResponse.response.statusCode == HttpStatus.ok){
+        return DataSuccess(httpResponse.data);
+      }
+      else{
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                requestOptions: httpResponse.response.requestOptions
+            ));
+      }
+    } on DioException catch(e){
+      return DataFailed(e);
+    }
+  }
+
+  @override
   Future<DataState<List<ReportModel>>> getMonthlyIncoming() async {
     // TODO: implement getMonthlyIncoming
     try{

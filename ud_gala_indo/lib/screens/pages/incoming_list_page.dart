@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ud_gala_indo/features/incoming/domain/entities/incoming.dart';
@@ -7,9 +6,10 @@ import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_state.dart';
 
 import '../../injection_container.dart';
-import 'incoming_new_page.dart';
 
 class IncomingListPage extends StatefulWidget {
+  const IncomingListPage({super.key});
+
   @override
   _IncomingListPageState createState() => _IncomingListPageState();
 }
@@ -34,15 +34,15 @@ class _IncomingListPageState extends State<IncomingListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.0),
-      padding: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(color: Colors.white),
         color: Theme.of(context).cardColor
       ),
       child: BlocProvider<RemoteIncomingBloc>(
-        create: (context) => sl()..add(GetIncomings()),
+        create: (context) => sl()..add(const GetIncomings()),
         child: Scaffold(
             body: _buildBody()
         ),
@@ -68,12 +68,12 @@ class _IncomingListPageState extends State<IncomingListPage> {
           List<IncomingEntity>  data = state.incomings!;
           return Scaffold(
             body: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Container(
                     alignment: Alignment.centerRight,
-                    child: TextField(
+                    child: const TextField(
                       decoration: InputDecoration(
                         labelText: 'Search',
                         border: OutlineInputBorder(),
@@ -83,15 +83,15 @@ class _IncomingListPageState extends State<IncomingListPage> {
                       style: TextStyle(fontSize: 14.0),
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  Container(
+                  const SizedBox(height: 16.0),
+                  SizedBox(
                     height: 400, // Fixed height for the scrollable area
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: DataTable(
-                          columns: [
+                          columns: const [
                             DataColumn(label: Text('No')),
                             DataColumn(label: Text('Nama Petani')),
                             DataColumn(label: Text('Jenis Kelamin')),
@@ -115,7 +115,7 @@ class _IncomingListPageState extends State<IncomingListPage> {
                                 Row(
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.delete, color: Colors.red),
+                                      icon: const Icon(Icons.delete, color: Colors.red),
                                       onPressed: () => _onDeleteButtonPressed(_),
                                     ),
                                   ],

@@ -8,7 +8,7 @@ abstract class OutgoingEntity extends Equatable {
   final String ? tanggalKeluar;
   final String ? beratCengkeh;
 
-  OutgoingEntity({
+  const OutgoingEntity({
     this.id,
     this.barangId,
     this.namaBarang,

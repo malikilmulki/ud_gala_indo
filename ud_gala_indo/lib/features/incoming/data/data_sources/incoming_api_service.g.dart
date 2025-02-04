@@ -81,6 +81,66 @@ class _IncomingApiService implements IncomingApiService {
   }
 
   @override
+  Future<HttpResponse<List<ReportModel>>> getDailyIncoming() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<List<ReportModel>>>(Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+          _dio.options,
+          '/incoming/getdaily',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+            .copyWith(
+            baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    List<ReportModel> value = _result.data!['data']
+        .map<ReportModel>((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<List<ReportModel>>> getWeeklyIncoming() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<List<ReportModel>>>(Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+          _dio.options,
+          '/incoming/getweekly',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+            .copyWith(
+            baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    List<ReportModel> value = _result.data!['data']
+        .map<ReportModel>((dynamic i) => ReportModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<List<ReportModel>>> getYearlyIncoming() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -15,13 +15,13 @@ abstract class RemoteIncomingEvent extends Equatable{
 }
 
 class GetIncomings extends RemoteIncomingEvent{
-  GetIncomings();
+  const GetIncomings();
 }
 
 class SaveIncoming extends RemoteIncomingEvent{
-  SaveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
+  const SaveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
 }
 
 class RemoveIncoming extends RemoteIncomingEvent{
-  RemoveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
+  const RemoveIncoming(IncomingEntity incomingEntity) : super (incoming: incomingEntity);
 }

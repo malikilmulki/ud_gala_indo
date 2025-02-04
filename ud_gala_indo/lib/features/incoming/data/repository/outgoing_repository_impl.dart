@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:ud_gala_indo/core/resources/data_state.dart';
 import 'package:ud_gala_indo/features/incoming/data/data_sources/outgoing_api_service.dart';
-import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
 import 'package:ud_gala_indo/features/incoming/data/models/outgoing.dart';
 import 'package:ud_gala_indo/features/incoming/domain/entities/outgoing.dart';
-import 'package:ud_gala_indo/features/incoming/domain/repository/incoming_repository.dart';
 import 'package:ud_gala_indo/features/incoming/domain/repository/outgoing_repository.dart';
 import 'package:ud_gala_indo/models/report_model.dart';
 
-import '../data_sources/outgoing_api_service.dart';
 
 class OutgoingRepositoryImpl implements OutgoingRepository{
   final OutgoingApiService _outgoingApiService;

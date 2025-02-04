@@ -8,6 +8,8 @@ import 'package:ud_gala_indo/features/incoming/presentation/bloc/outgoing/remote
 import 'package:ud_gala_indo/injection_container.dart';
 
 class OutgoingListPage extends StatefulWidget {
+  const OutgoingListPage({super.key});
+
   @override
   _OutgoingListPageState createState() => _OutgoingListPageState();
 }
@@ -31,8 +33,8 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.0),
-      padding: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: Colors.white),
@@ -61,7 +63,7 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
             print(data.length);
             return Scaffold(
               body: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     Container(
@@ -70,21 +72,21 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                       child:
                       TextField(
                         controller: searchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Search',
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                           suffixIcon: Icon(Icons.search, size: 20.0),
                         ),
-                        style: TextStyle(fontSize: 14.0),
+                        style: const TextStyle(fontSize: 14.0),
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: DataTable(
-                          columns: [
+                          columns: const [
                             DataColumn(label: Text('No')),
                             DataColumn(label: Text('Nama Karyawan')),
                             DataColumn(label: Text('Tanggal Keluar')),
@@ -97,12 +99,12 @@ class _OutgoingListPageState extends State<OutgoingListPage> {
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(data[index].karyawan!)),
                               DataCell(Text(data[index].tanggalKeluar!)),
-                              DataCell(Text(data[index].beratCengkeh! + ' Kg')),
+                              DataCell(Text('${data[index].beratCengkeh!} Kg')),
                               DataCell(
                                 Row(
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.delete, color: Colors.red),
+                                      icon: const Icon(Icons.delete, color: Colors.red),
                                       onPressed: () => _onDeleteButtonPressed(_),
                                     ),
                                   ],

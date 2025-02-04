@@ -8,6 +8,8 @@ import 'package:ud_gala_indo/screens/pages/report_page.dart';
 import '../service/auth_service.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   List<NavigationRailDestination> _buildDestinations() {
     return [
-      NavigationRailDestination(
+      const NavigationRailDestination(
         icon: FaIcon(FontAwesomeIcons.house, color: Colors.lightGreenAccent),
         label: Text('Dashboard'),
       ),
@@ -53,25 +55,25 @@ class _HomePageState extends State<HomePage> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return DashboardPage();
+        return const DashboardPage();
       case 1:
-        return IncomingPage();
+        return const IncomingPage();
       case 2:
-        return OutgoingPage();
+        return const OutgoingPage();
       case 3:
-        return ReportPage();
+        return const ReportPage();
       default:
-        return DashboardPage();
+        return const DashboardPage();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _authService = AuthService();
+    final AuthService authService = AuthService();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('UD Gala Indo'),
+        title: const Text('UD Gala Indo'),
       ),
       body: Row(
         children: <Widget>[
@@ -86,14 +88,14 @@ class _HomePageState extends State<HomePage> {
                 _selectedMenuIndex = index;
               });
               if(index == 4){
-                await _authService.logout();
+                await authService.logout();
                 Navigator.pushReplacementNamed(context, '/login');
               }
             },
             labelType: NavigationRailLabelType.all,
             destinations: _buildDestinations().toList(),
           ),
-          VerticalDivider(thickness: 1, width: 1),
+          const VerticalDivider(thickness: 1, width: 1),
           // Right Content (changing based on selected menu)
           Expanded(
             child: _getPage(_selectedMenuIndex),

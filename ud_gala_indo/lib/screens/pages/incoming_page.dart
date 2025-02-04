@@ -5,7 +5,7 @@ import 'incoming_list_page.dart';
 import 'incoming_new_page.dart';
 
 class IncomingPage extends StatefulWidget {
-  const IncomingPage({Key? key}) : super(key: key);
+  const IncomingPage({super.key});
 
   @override
   State<IncomingPage> createState() => _IncomingPageState();
@@ -14,8 +14,8 @@ class IncomingPage extends StatefulWidget {
 class _IncomingPageState extends State<IncomingPage> {
   int _selectedScreenIndex = 0;
   final List _screens = [
-    {"screen": IncomingListPage(), "title": "Daftar Cengkeh Masuk"},
-    {"screen": IncomingNewPage(), "title": "Tambah Cengkeh Masuk"}
+    {"screen": const IncomingListPage(), "title": "Daftar Cengkeh Masuk"},
+    {"screen": const IncomingNewPage(), "title": "Tambah Cengkeh Masuk"}
   ];
 
   void _selectScreen(int index) {

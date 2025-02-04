@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ud_gala_indo/core/resources/data_state.dart';
-import 'package:ud_gala_indo/features/incoming/data/models/incoming.dart';
 import 'package:ud_gala_indo/features/incoming/domain/usecases/incoming/delete_incoming.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_event.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/incoming/remote_incoming_state.dart';
@@ -11,7 +10,7 @@ class RemoteIncomingBloc extends Bloc<RemoteIncomingEvent, RemoteIncomingState>{
   final GetIncomingUseCase _getIncomingUseCase;
   final DeleteIncomingUseCase _removeIncomingUsecase;
 
-  RemoteIncomingBloc(this._getIncomingUseCase, this._removeIncomingUsecase) : super(RemoteIncomingLoading()){
+  RemoteIncomingBloc(this._getIncomingUseCase, this._removeIncomingUsecase) : super(const RemoteIncomingLoading()){
     on <GetIncomings>(onGetIncomings);
     on <RemoveIncoming>(onRemoveIncoming);
   }

@@ -12,9 +12,7 @@ class AuthInterceptor extends Interceptor {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('jwtoken') ?? "";
     print('test');
-    if(token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
-    return super.onRequest(options, handler);
+    options.headers['Authorization'] = 'Bearer $token';
+      return super.onRequest(options, handler);
   }
 }

@@ -13,7 +13,7 @@ abstract class IncomingEntity extends Equatable {
   final String ? beratCengkeh;
   final String ? status;
 
-  IncomingEntity({
+  const IncomingEntity({
     this.id,
     this.no,
     this.barangId,

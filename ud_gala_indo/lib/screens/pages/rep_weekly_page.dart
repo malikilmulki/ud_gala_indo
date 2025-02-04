@@ -1,27 +1,26 @@
-import 'dart:typed_data';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:excel/excel.dart' hide Border;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:excel/excel.dart' hide Border;
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_bloc.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_event.dart';
 import 'package:ud_gala_indo/features/incoming/presentation/bloc/remote_report_state.dart';
 import 'package:ud_gala_indo/injection_container.dart';
 import 'package:ud_gala_indo/models/report_model.dart';
 
-class ReportIncomingPage extends StatefulWidget {
-  const ReportIncomingPage({super.key});
+class ReportWeeklyPage extends StatefulWidget {
+  const ReportWeeklyPage({super.key});
 
   @override
-  _ReportIncomingPageState createState() => _ReportIncomingPageState();
+  _ReportWeeklyPageState createState() => _ReportWeeklyPageState();
 }
 
-class _ReportIncomingPageState extends State<ReportIncomingPage> {
+class _ReportWeeklyPageState extends State<ReportWeeklyPage> {
   late List<ReportModel> dtList;
 
   @override
@@ -31,12 +30,12 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             color:Theme.of(context).primaryColor
         ),
         child: Center(
           child: BlocProvider<RemoteReportBloc>(
-            create: (context) => sl()..add(const GetMonthlyIncoming()),
+            create: (context) => sl()..add(const GetWeeklyIncoming()),
             child: Scaffold(
                 body: _buildBody()
             ),
@@ -57,7 +56,9 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
             return const Center(child: Icon(Icons.refresh));
           }
           if(state is RemoteReportStateDone){
+            print('done');
             dtList = state.reports!;
+            print(dtList.length);
             return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -69,15 +70,13 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
                         child: DataTable(
                           columns: const [
                             DataColumn(label: Text('No')),
-                            DataColumn(label: Text('Bulan')),
-                            DataColumn(label: Text('Jumlah Masuk')),
-                            DataColumn(label: Text('Total Berat')),
+                            DataColumn(label: Text('Minggu')),
+                            DataColumn(label: Text('Total Berat (Stock)')),
                           ],
                           rows: List.generate(dtList.length, (index) {
                             return DataRow(cells: [
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(dtList[index].bulan!)),
-                              DataCell(Text(dtList[index].jumlah!)),
                               DataCell(Text("${dtList[index].berat!} kg"))
                             ]);
                           }),
@@ -87,15 +86,15 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                              ElevatedButton(
-                                onPressed: () => exportToPdf(context),
-                                child: const Text('Export to PDF'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () => exportToExcel(),
-                                child: const Text('Export to Excel'),
-                              ),
-                    ],)
+                        ElevatedButton(
+                          onPressed: () => exportToPdf(context),
+                          child: const Text('Export to PDF'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => exportToExcel(),
+                          child: const Text('Export to Excel'),
+                        ),
+                      ],)
                   ],
                 ),
               ),
@@ -114,16 +113,18 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
     final ttf = pw.Font.ttf(fontData);
 
     var dataList = dtList.map((e) => e.toJson()).toList();
-    List<String> dataColumns = [ 'Bulan', 'Jumlah Masuk', 'Total Berat'];
+    List<String> dataColumns = [ 'Tahun', 'Total Berat'];
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
           return pw.TableHelper.fromTextArray(
             headers: dataColumns,
-            data: dataList.map((item) {
-              var valuesList = item.values.toList();
-              valuesList[2] = valuesList[2] + ' Kg'; // Change the third column
-              return valuesList;
+            data:  dataList
+                .map((item) {
+              List<dynamic> values = item.values.toList();
+              values[2] = values[2] + ' Kg';
+              values.removeAt(1);
+              return values;
             }).toList(),
             cellStyle: pw.TextStyle(font: ttf), // Use custom font here
             headerStyle: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.bold),
@@ -132,23 +133,23 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
       ),
     );
 
-    await saveFileToInternalStorage(await pdf.save(), 'incoming.pdf');
+    await saveFileToInternalStorage(await pdf.save(), 'stock.pdf');
   }
 
   Future<void> exportToExcel() async {
     var excel = Excel.createExcel();
     Sheet sheetObject = excel['Sheet1'];
     var dataList = dtList.map((e) => e.toJson()).toList();
-    List<String> dataColumns = [ 'Bulan', 'Jumlah Masuk', 'Total Berat'];
-
+    List<String> dataColumns = [ 'Tahun', 'Total Berat'];
     sheetObject.appendRow(dataColumns); // Add header
     for (var row in dataList) {
-      var valuesList = row.values.toList();
-      valuesList[2] = valuesList[2] + ' Kg'; // Change the third column
-      sheetObject.appendRow(valuesList);
+      List<dynamic> values = row.values.toList();
+      values[2] = values[2] + ' Kg';
+      values.removeAt(1);
+      sheetObject.appendRow(values);
     }
 
-    await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'incoming.xlsx');
+    await saveFileToInternalStorage(Uint8List.fromList(excel.save()!), 'stock.xlsx');
   }
 
   Future<void> saveFileToInternalStorage(Uint8List bytes, String fileName) async {
@@ -166,3 +167,4 @@ class _ReportIncomingPageState extends State<ReportIncomingPage> {
     OpenFile.open(filePath, linuxByProcess: true); // Attempt to open the file
   }
 }
+

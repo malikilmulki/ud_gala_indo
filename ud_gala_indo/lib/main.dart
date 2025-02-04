@@ -7,18 +7,20 @@ import 'screens/login_screen.dart';
 
 void main() {
   initializeDependencies();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
       theme: theme(),
       routes: {
-        '/': (context) => AuthGuard(child: HomePage()),
-        '/login': (context) => LoginScreen(),
+        '/': (context) => AuthGuard(child: const HomePage()),
+        '/login': (context) => const LoginScreen(),
       },
     );
   }

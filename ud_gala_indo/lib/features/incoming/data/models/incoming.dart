@@ -1,19 +1,30 @@
 import 'package:ud_gala_indo/features/incoming/domain/entities/incoming.dart';
 
 class IncomingModel extends IncomingEntity{
+  @override
   final String ? id;
+  @override
   final String ? no;
+  @override
   final String ? barangId;
+  @override
   final String ? namaBarang;
+  @override
   final String ? petaniId;
+  @override
   final String ? namaPetani;
+  @override
   final String ? jenisKelamin;
+  @override
   final String ? kawasanKebun;
+  @override
   final String ? tanggalMasuk;
+  @override
   final String ? beratCengkeh;
+  @override
   final String ? status;
 
-  IncomingModel({
+  const IncomingModel({
     this.id,
     this.no,
     this.barangId,

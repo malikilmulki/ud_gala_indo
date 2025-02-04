@@ -13,6 +13,12 @@ abstract class IncomingApiService{
   @GET('/incoming/getallincominggoods')
   Future<HttpResponse<List<IncomingModel>>> getIncomingService();
 
+  @GET('/incoming/getdaily')
+  Future<HttpResponse<List<ReportModel>>> getDailyIncoming();
+
+  @GET('/incoming/getweekly')
+  Future<HttpResponse<List<ReportModel>>> getWeeklyIncoming();
+
   @GET('/incoming/getmonthly')
   Future<HttpResponse<List<ReportModel>>> getMonthlyIncoming();
 

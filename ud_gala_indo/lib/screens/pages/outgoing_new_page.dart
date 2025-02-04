@@ -7,6 +7,8 @@ import 'package:ud_gala_indo/features/incoming/data/models/outgoing.dart';
 import 'package:ud_gala_indo/service/api_service.dart'; // For JSON parsing
 
 class OutgoingNewPage extends StatefulWidget {
+  const OutgoingNewPage({super.key});
+
   @override
   _OutgoingNewPageState createState() => _OutgoingNewPageState();
 }
@@ -42,7 +44,7 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
         print(newData);
         await outgoingService.saveData(newData);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Data successfully saved!')),
+          const SnackBar(content: Text('Data successfully saved!')),
         );
       } catch (e) {
         print(newData);
@@ -57,8 +59,8 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-        margin: EdgeInsets.all(16.0),
-        padding: EdgeInsets.all(16.0),
+        margin: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(color: Colors.white),
@@ -81,7 +83,7 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
                             children: [
                               TextFormField(
                                 controller: _karyawanController,
-                                decoration: InputDecoration(labelText: 'Karyawan'),
+                                decoration: const InputDecoration(labelText: 'Karyawan'),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter nama karyawan';
@@ -91,7 +93,7 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
                               ),
                               TextFormField(
                                 controller: _beratController,
-                                decoration: InputDecoration(labelText: 'Berat (kg)'),
+                                decoration: const InputDecoration(labelText: 'Berat (kg)'),
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -108,7 +110,7 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
                                 decoration: InputDecoration(
                                   labelText: 'Tanggal Keluar',
                                   suffixIcon: IconButton(
-                                    icon: Icon(Icons.calendar_today),
+                                    icon: const Icon(Icons.calendar_today),
                                     onPressed: () async {
                                       DateTime? pickedDate = await showDatePicker(
                                         context: context,
@@ -135,10 +137,10 @@ class _OutgoingNewPageState extends State<OutgoingNewPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: _saveData,
-                          child: Text('Save'),
+                          child: const Text('Save'),
                         ),
                       ],
                     ),

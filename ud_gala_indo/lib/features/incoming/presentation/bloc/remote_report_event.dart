@@ -11,23 +11,30 @@ abstract class RemoteReportEvent extends Equatable{
 
 }
 
+class GetDailyIncoming extends RemoteReportEvent{
+  const GetDailyIncoming();
+}
+
+class GetWeeklyIncoming extends RemoteReportEvent{
+  const GetWeeklyIncoming();
+}
 
 class GetMonthlyIncoming extends RemoteReportEvent{
-  GetMonthlyIncoming();
+  const GetMonthlyIncoming();
 }
 
 class GetYearlyIncoming extends RemoteReportEvent{
-  GetYearlyIncoming();
+  const GetYearlyIncoming();
 }
 
 class GetMonthlyOutgoing extends RemoteReportEvent{
-  GetMonthlyOutgoing();
+  const GetMonthlyOutgoing();
 }
 
 class GetYearlyOutgoing extends RemoteReportEvent{
-  GetYearlyOutgoing();
+  const GetYearlyOutgoing();
 }
 
 class GetStock extends RemoteReportEvent{
-  GetStock();
+  const GetStock();
 }

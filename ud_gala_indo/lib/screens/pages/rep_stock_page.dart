@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
@@ -15,6 +14,8 @@ import 'package:ud_gala_indo/injection_container.dart';
 import 'package:ud_gala_indo/models/report_model.dart';
 
 class ReportStockPage extends StatefulWidget {
+  const ReportStockPage({super.key});
+
   @override
   _ReportStockPageState createState() => _ReportStockPageState();
 }
@@ -25,8 +26,8 @@ class _ReportStockPageState extends State<ReportStockPage> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-        margin: EdgeInsets.all(16.0),
-        padding: EdgeInsets.all(16.0),
+        margin: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(color: Colors.white),
@@ -34,7 +35,7 @@ class _ReportStockPageState extends State<ReportStockPage> {
         ),
         child: Center(
           child: BlocProvider<RemoteReportBloc>(
-            create: (context) => sl()..add(GetStock()),
+            create: (context) => sl()..add(const GetStock()),
             child: Scaffold(
                 body: _buildBody()
             ),
@@ -60,14 +61,14 @@ class _ReportStockPageState extends State<ReportStockPage> {
             print(dtList.length);
             return Scaffold(
               body: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: DataTable(
-                          columns: [
+                          columns: const [
                             DataColumn(label: Text('No')),
                             DataColumn(label: Text('Tahun')),
                             DataColumn(label: Text('Total Berat (Stock)')),
@@ -76,7 +77,7 @@ class _ReportStockPageState extends State<ReportStockPage> {
                             return DataRow(cells: [
                               DataCell(Text((index + 1).toString())),
                               DataCell(Text(dtList[index].bulan!)),
-                              DataCell(Text(dtList[index].berat!  + " kg"))
+                              DataCell(Text("${dtList[index].berat!} kg"))
                             ]);
                           }),
                         ),
@@ -87,11 +88,11 @@ class _ReportStockPageState extends State<ReportStockPage> {
                       children: [
                         ElevatedButton(
                           onPressed: () => exportToPdf(context),
-                          child: Text('Export to PDF'),
+                          child: const Text('Export to PDF'),
                         ),
                         ElevatedButton(
                           onPressed: () => exportToExcel(),
-                          child: Text('Export to Excel'),
+                          child: const Text('Export to Excel'),
                         ),
                       ],)
                   ],

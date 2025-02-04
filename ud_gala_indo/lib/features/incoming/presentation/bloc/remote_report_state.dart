@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -9,20 +8,20 @@ abstract class RemoteReportState extends Equatable{
   final List<ReportModel> ? reports;
   final DioException ? error;
 
-  RemoteReportState({this.reports, this.error});
+  const RemoteReportState({this.reports, this.error});
 
   @override
   List<Object> get props => [reports ?? [], error ?? []];
 }
 
 class RemoteReportStateLoading extends RemoteReportState{
-  RemoteReportStateLoading();
+  const RemoteReportStateLoading();
 }
 
 class RemoteReportStateDone extends RemoteReportState{
-  RemoteReportStateDone(List<ReportModel> reports) : super (reports: reports);
+  const RemoteReportStateDone(List<ReportModel> reports) : super (reports: reports);
 }
 
 class RemoteReportStateError extends RemoteReportState{
-  RemoteReportStateError(DioException error) : super(error: error);
+  const RemoteReportStateError(DioException error) : super(error: error);
 }

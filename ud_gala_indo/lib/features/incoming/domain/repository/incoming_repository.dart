@@ -4,6 +4,8 @@ import 'package:ud_gala_indo/models/report_model.dart';
 
 abstract class IncomingRepository{
   Future<DataState<List<IncomingEntity>>> getIncomingGoods();
+  Future<DataState<List<ReportModel>>> getDailyIncoming();
+  Future<DataState<List<ReportModel>>> getWeeklyIncoming();
   Future<DataState<List<ReportModel>>> getMonthlyIncoming();
   Future<DataState<List<ReportModel>>> getYearlyIncoming();
   Future<DataState<List<ReportModel>>> getStock();

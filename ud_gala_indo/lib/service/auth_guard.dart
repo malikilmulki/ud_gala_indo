@@ -6,7 +6,7 @@ class AuthGuard extends StatelessWidget {
   final Widget child;
   final AuthService _authService = AuthService();
 
-  AuthGuard({required this.child});
+  AuthGuard({super.key, required this.child});
 
   Future<bool> _checkAuth() async {
     return await _authService.isLoggedIn();
@@ -18,11 +18,11 @@ class AuthGuard extends StatelessWidget {
       future: _checkAuth(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasData && snapshot.data == true) {
           return child;
         } else {
-          return LoginScreen();
+          return const LoginScreen();
         }
       },
     );

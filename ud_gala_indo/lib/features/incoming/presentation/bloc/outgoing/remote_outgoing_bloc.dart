@@ -10,7 +10,7 @@ class RemoteOutgoingBloc extends Bloc<RemoteOutgoingEvent, RemoteOutgoingState>{
   final GetOutgoingUseCase _getOutgoingUseCase;
   final DeleteOutgoingUseCase _deleteUsecase;
 
-  RemoteOutgoingBloc(this._getOutgoingUseCase, this._deleteUsecase) : super(RemoteOutgoingLoading()){
+  RemoteOutgoingBloc(this._getOutgoingUseCase, this._deleteUsecase) : super(const RemoteOutgoingLoading()){
     on <GetOutgoings>(onGetOutgoings);
     on <RemoveOutgoing>(onRemoveOutgoing);
   }
